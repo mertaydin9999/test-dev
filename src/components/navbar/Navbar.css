@@ -1,0 +1,29 @@
+.nav {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin: 0 0 2em 0;
+  background-color: rgb(240, 61, 61);
+}
+.nav ul {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 2em;
+  margin: 0;
+}
+.nav > ul > li {
+  font-size: 1.2em;
+  width: 50%;
+  text-align: center;
+  padding: 0.8em 0em;
+  color: #fff;
+  cursor: pointer;
+  border: 1px rgb(240, 61, 61) solid;
+}
+.nav ul li:hover {
+  background-color: #fff;
+  color: red;
+}
