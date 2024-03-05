@@ -1,7 +1,10 @@
-body {
+* {
   box-sizing: border-box;
   margin: 0;
   padding: 0em 0em;
+}
+body {
+  min-height: 90vh;
 }
 header {
   display: flex;
@@ -22,6 +25,34 @@ main {
   margin: 0 auto;
   margin-bottom: 10em;
 }
+a {
+  text-decoration: none;
+  color: #fff !important;
+}
+
+/*----------------------------DATAGRID-------------a lari duzenle------------*/
 .dx-datagrid .dx-row {
   border-bottom: 1px solid #ddd; /* Yatay çizgi */
+}
+
+.dx-datagrid .dx-link {
+  margin: 0;
+  text-decoration: none;
+  padding: 0.3em;
+  font-size: 0.8em;
+  border-radius: 0.2em;
+}
+.dx-datagrid .dx-link:hover {
+  color: #fff !important;
+
+  border-radius: 0.2em;
+  transform: scale(1.05);
+}
+.dx-datagrid .dx-link-delete {
+  background-color: #ff004d;
+  color: #fff !important;
+}
+.dx-datagrid .dx-link-edit {
+  background-color: rgb(54, 162, 209);
+  color: #fff !important;
 }

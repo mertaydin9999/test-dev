@@ -9,21 +9,34 @@
   list-style: none;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  width: 100%;
-  padding: 0 2em;
-  margin: 0;
+  justify-content: center;
+  width: 95%;
+  padding: 0 0em;
+  gap: 0em;
+  margin: 0 auto;
 }
 .nav > ul > li {
+  box-sizing: border-box  ;
   font-size: 1.2em;
-  width: 50%;
+  display: flex;
+  padding: 0em 0em;
   text-align: center;
-  padding: 0.8em 0em;
   color: #fff;
   cursor: pointer;
-  border: 1px rgb(240, 61, 61) solid;
+  border: 0.1px rgb(240, 61, 61) solid;
 }
 .nav ul li:hover {
   background-color: #fff;
   color: red;
+}
+
+.nav ul li:hover a {
+  text-decoration: none;
+  color: red !important;
+  background-color: #fff !important;
+}
+
+.nav > ul > li > a {
+  margin: 0 !important;
+  padding: 0.5em 2em;
 }
