@@ -1,5 +1,5 @@
 import React from "react";
-import DataGridTemplate from "../src/components/data-grid/DataGridTemplate";
+import DataGridTemplate from "../components/data-grid/DataGridTemplate";
 
 const Home = () => {
   return (

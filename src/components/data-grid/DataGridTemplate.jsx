@@ -1,6 +1,6 @@
 import "devextreme/dist/css/dx.light.css";
 import "devextreme/data/odata/store";
-
+import "./DataGridTemplate.css";
 import {
   Column,
   DataGrid,
@@ -37,7 +37,6 @@ const onExportingPdf = (e) => {
     doc.save("Companies.pdf");
   });
 };
-
 
 const allowedPageSizes = [5, 10, "all"];
 
@@ -153,30 +152,11 @@ const DataGridTemplate = () => {
         />
       </Column>
 
-      <Column dataField="ShipCountry" caption="Abone No">
-        <StringLengthRule
-          max={15}
-          message="The field ShipCountry must be a string with a maximum length of 15."
-        />
-      </Column>
-
       <Column dataField="ShipVia" caption="Tesisat No" dataType="number">
         <Lookup
           dataSource={shippersData}
           valueExpr="Value"
           displayExpr="Text"
-        />
-      </Column>
-      <Column dataField="ShipCountry" caption="Sayac Kodu">
-        <StringLengthRule
-          max={15}
-          message="The field ShipCountry must be a string with a maximum length of 15."
-        />
-      </Column>
-      <Column dataField="ShipCountry" caption="Carpan">
-        <StringLengthRule
-          max={2}
-          message="The field ShipCountry must be a string with a maximum length of 15."
         />
       </Column>
     </DataGrid>
