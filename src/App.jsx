@@ -8,7 +8,7 @@ import LoginPage from "./pages/auth/LoginPage";
 import MyAccountPage from "./pages/auth/MyAccountPage";
 import LoadingModemCommandJobPage from "./pages/modemWorks/LoadingModemCommandJobPage";
 import ModemParametersPage from "./pages/modemWorks/ModemParametersPage";
-import PackagesPage from "./pages/modemWorks/PackagesPage";
+import PackagesUpdatePage from "./pages/modemWorks/PackagesUpdatePage";
 import SmsControlPage from "./pages/modemWorks/SmsControlPage";
 import CommunicationUnitPage from "./pages/plumbing/CommunicationUnitPage";
 import LocationPage from "./pages/plumbing/LocationPage";
@@ -59,7 +59,7 @@ const router = createBrowserRouter([
         element: <LoadingModemCommandJobPage />,
       },
       { path: "/modem-parameters", element: <ModemParametersPage /> },
-      { path: "/packages", element: <PackagesPage /> },
+      { path: "/packages-update", element: <PackagesUpdatePage /> },
       { path: "/sms-control-page", element: <SmsControlPage /> },
       { path: "/communication-unit", element: <CommunicationUnitPage /> },
       { path: "/location", element: <LocationPage /> },
