@@ -1,10 +1,18 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
+.open-sans-h1 {
+  font-family: "Open Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 800;
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
+}
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0em 0em;
 }
 body {
-  min-height: 90vh;
+  background-color: #202228 !important;
 }
 header {
   display: flex;
@@ -18,11 +26,9 @@ header {
 }
 
 h1 {
-  margin: 0em;
+  color: #e6e6e6;
 }
 main {
-  width: 90%;
-  margin: 0 auto;
   margin-bottom: 10em;
 }
 a {

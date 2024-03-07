@@ -8,7 +8,7 @@ const Header = () => {
         </a>
       </div>
       <div>
-        <h1>MAKEL OTOMATİK SAYAÇ OKUMA SİSTEMİ</h1>
+        <h1 className="open-sans-h1">Makel Otomatik Sayac Okuma Sistemi</h1>
       </div>
     </header>
   );
