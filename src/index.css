@@ -12,7 +12,7 @@
   padding: 0em 0em;
 }
 body {
-  background-color: #202228 !important;
+  background-color: #141414 !important;
 }
 header {
   display: flex;
@@ -34,5 +34,7 @@ main {
 a {
   text-decoration: none;
 }
-
+.bgc {
+  background-color: white !important;
+}
 /*----------------------------DATAGRID-------------a lari duzenle------------*/

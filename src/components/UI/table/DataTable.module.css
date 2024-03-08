@@ -38,7 +38,6 @@
   display: flex; /* Yatay hizalama için flex kullanın */
   justify-content: center;
   scrollbar-color: #888888 #202228;
-  border: 1px solid #292d35;
 }
 .page-num-list {
   display: flex;
@@ -106,3 +105,13 @@ button:hover {
   background-color: #9f0129;
   color: #fff !;
 }
+.table-container input {
+  outline: none;
+  padding: 0.2em;
+  border-radius: 0.3em;
+  border: none;
+}
+.table-container th:nth-child(4) input {
+  width: 9ch; /* Her karakterin genişliği yaklaşık olarak 1 "ch" */
+}
+

@@ -1,12 +1,7 @@
 import React from "react";
-import DataGridTemplate from "../components/data-grid/DataGridTemplate";
 
 const Home = () => {
-  return (
-    <main>
-      <DataGridTemplate />
-    </main>
-  );
+  return <main></main>;
 };
 
 export default Home;
