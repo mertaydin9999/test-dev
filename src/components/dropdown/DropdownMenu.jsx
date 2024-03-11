@@ -8,11 +8,12 @@ import {
   TeamOutlined,
   UserOutlined,
   HomeOutlined,
+  HddOutlined,
   MailOutlined,
   AppstoreOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
-import { Breadcrumb, Layout, Menu, theme } from "antd";
+import { Layout, Menu } from "antd";
 import HeaderComponent from "../header/HeaderComponent";
 const { Header, Content, Footer, Sider } = Layout;
 function getItem(label, key, icon, children, type) {
@@ -37,7 +38,7 @@ const items = [
     type: "divider",
   },
   getItem("Sayac", "/meter", <SettingOutlined />),
-  getItem("Sayac Endeksleri", "/all-read-indexes"),
+  getItem("Sayac Endeksleri", "/all-read-indexes", <HddOutlined />),
 ];
 
 const DropdownMenu = () => {
@@ -96,14 +97,6 @@ const DropdownMenu = () => {
         >
           <DataTable />
         </Content>
-        {/* <Footer
-          style={{
-            textAlign: "center",
-            display: "fixed",
-          }}
-        >
-          Copyright {new Date().getFullYear()} MAKEL - (4.64) - www.makel.com.tr
-        </Footer> */}
       </Layout>
     </Layout>
   );

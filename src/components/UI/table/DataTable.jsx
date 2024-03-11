@@ -1,11 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { meterData } from "../../../data";
+
 import styles from "./DataTable.module.css";
 import Button from "../button/Button";
 import axios from "axios";
+import {
+  SearchOutlined,
+  CheckOutlined,
+  CloseOutlined,
+  LoadingOutlined,
+} from "@ant-design/icons";
+import { Spin } from "antd";
 const url = "http://10.0.0.101:8088/Makel/OsosApi/Sayac";
 const DataTable = () => {
   const [dataArray, setDataArray] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredData, setFilteredData] = useState([]);
   const [searchValues, setSearchValues] = useState({
@@ -24,12 +32,6 @@ const DataTable = () => {
     yukProfiliBirim: "",
     yukProfiliKayit: "",
   });
-  const itemsPerPage = 10;
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(dataArray.length / itemsPerPage);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -38,13 +40,18 @@ const DataTable = () => {
         setFilteredData(response.data);
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchData();
   }, []);
-
-  // buradan sonrasi deneme
+  const itemsPerPage = 10;
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(dataArray.length / itemsPerPage);
 
   const changePage = (pageNumber) => {
     if (pageNumber >= 1 && pageNumber <= totalPages) {
@@ -91,46 +98,14 @@ const DataTable = () => {
 
   useEffect(() => {
     const filtered = dataArray.filter((item) => {
-      return (
-        item.uretici
-          .toLowerCase()
-          .startsWith(searchValues.uretici.toLowerCase()) &&
-        item.model.toLowerCase().startsWith(searchValues.model.toLowerCase()) &&
-        item.sayacAdi
-          .toLowerCase()
-          .startsWith(searchValues.sayacAdi.toLowerCase()) &&
-        (searchValues.seriNo === "" ||
-          item.seriNo.toString().startsWith(searchValues.seriNo.toString())) &&
-        (searchValues.aboneNo === "" ||
-          item.aboneNo
-            .toString()
-            .startsWith(searchValues.aboneNo.toString())) &&
-        (searchValues.tesisatNo === "" ||
-          item.tesisatNo
-            .toString()
-            .startsWith(searchValues.tesisatNo.toString())) &&
-        (searchValues.sayacKodu === "" ||
-          item.sayacKodu
-            .toString()
-            .startsWith(searchValues.sayacKodu.toString())) &&
-        (searchValues.carpan === "" ||
-          item.carpan.toString().startsWith(searchValues.carpan.toString())) &&
-        (searchValues.akimTrafoOrani === "" ||
-          item.akimTrafoOrani
-            .toString()
-            .startsWith(searchValues.akimTrafoOrani.toString())) &&
-        (searchValues.gerilimTrafoOrani === "" ||
-          item.gerilimTrafoOrani
-            .toString()
-            .startsWith(searchValues.gerilimTrafoOrani.toString())) &&
-        item.birim.toLowerCase().startsWith(searchValues.birim.toLowerCase()) &&
-        item.yukProfiliBirim
-          .toLowerCase()
-          .startsWith(searchValues.yukProfiliBirim.toLowerCase()) &&
-        item.yukProfiliKayit
-          .toLowerCase()
-          .startsWith(searchValues.yukProfiliKayit.toLowerCase())
-      );
+      for (let key in searchValues) {
+        const searchValue = searchValues[key].toLowerCase();
+        const itemValue = item[key] ? item[key].toString().toLowerCase() : ""; // Eğer item[key] null ise, boş bir string olarak kabul edilir
+        if (searchValue && !itemValue.startsWith(searchValue)) {
+          return false;
+        }
+      }
+      return true;
     });
     setFilteredData(filtered);
   }, [searchValues]);
@@ -138,6 +113,7 @@ const DataTable = () => {
   return (
     <>
       <div className={styles["data-table-page-container"]}>
+        <h3>Sayac</h3>
         <div className={styles["table-scroll"]}>
           <div className={styles["table-container-wrapper"]}>
             <table className={styles["table-container"]}>
@@ -158,7 +134,7 @@ const DataTable = () => {
                   <th>Yuk Profili Birim</th>
                   <th>Yuk Profili Kayit</th>
                 </tr>
-                <tr>
+                <tr className={styles["flex-container"]}>
                   <th>
                     <input
                       type="text"
@@ -167,6 +143,7 @@ const DataTable = () => {
                       value={searchValues.uretici}
                       onChange={handleInputChange}
                     />
+                    <SearchOutlined />
                   </th>
                   <th>
                     <input
@@ -287,6 +264,7 @@ const DataTable = () => {
                   </th>
                 </tr>
               </thead>
+
               <tbody>
                 {currentItems.map((item, index) => (
                   <tr key={index}>
@@ -299,7 +277,13 @@ const DataTable = () => {
                     <td>{item.sayacKodu ? item.sayacKodu : "Yok"}</td>
                     <td>{item.carpan}</td>
                     <td>{item.akimTrafoOrani ? item.akimTrafoOrani : "Yok"}</td>
-                    <td>{item.ciftYonlu ? "Evet" : "Hayir"}</td>
+                    <td>
+                      {item.ciftYonlu ? (
+                        <CheckOutlined style={{ color: "#6abe39" }} />
+                      ) : (
+                        <CloseOutlined style={{ color: "#e84749" }} />
+                      )}
+                    </td>
                     <td>
                       {item.gerilimTrafoOrani ? item.gerilimTrafoOrani : "Yok"}
                     </td>
@@ -308,6 +292,15 @@ const DataTable = () => {
                     <td>{item.yukProfiliKayit}</td>
                   </tr>
                 ))}
+                {loading && ( // Loading durumunda spinner'ı göster
+                  <div className={styles.loadingSpinner}>
+                    <Spin
+                      indicator={
+                        <LoadingOutlined style={{ fontSize: 24 }} spin />
+                      }
+                    />
+                  </div>
+                )}
               </tbody>
             </table>
           </div>
