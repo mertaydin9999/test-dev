@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import styles from "./AllReadIndexesPage.module.css";
+import Button from "../../../components/UI/button/Button";
 import {
   donemGetir,
   formatTarih,
@@ -8,7 +9,7 @@ import {
   calculateEndAktifRatio,
 } from "../../../utils/dataFunctions";
 import { LoadingOutlined } from "@ant-design/icons";
-import { Button, Modal, Spin } from "antd";
+import { Modal, Spin } from "antd";
 const url =
   "http://10.0.0.101:8088/Makel/OsosApi/Sayac/SayacAyGecisEndeks/01.01.2024/03.11.2024";
 const AllReadIndexesPage = () => {
@@ -17,25 +18,12 @@ const AllReadIndexesPage = () => {
   const [dataArray, setDataArray] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredData, setFilteredData] = useState([]);
-  // const [searchValues, setSearchValues] = useState({
-  //   sayacAdi: "",
-  //   seriNo: "",
-  //   maxDemandTarih: "",
-  //   aktif: "",
-  //   tarife1: "",
-  //   tarife2: "",
-  //   tarife3: "",
-  //   enduktif: "",
-  //   kapasitif: "",
-  //   donemAy: "",
-  //   donemYil: "",
-  // });
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(url);
         setDataArray(response.data);
-        setFilteredData(response.data);
       } catch (error) {
         console.log(error);
       } finally {
@@ -45,6 +33,29 @@ const AllReadIndexesPage = () => {
 
     fetchData();
   }, []);
+  const mapToSeparateArray = (data) => {
+    const separateArray = [];
+
+    data.forEach((item) => {
+      const { sayacAdi, sayacGecmisEndeks, ...rest } = item;
+      sayacGecmisEndeks.forEach((endeks) => {
+        separateArray.push({
+          sayacAdi,
+          ...rest,
+          ...endeks,
+        });
+      });
+    });
+    return separateArray;
+  };
+  const separateArray = mapToSeparateArray(dataArray);
+
+  const itemsPerPage = 10;
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+
+  const totalPages = Math.ceil(separateArray.length / itemsPerPage);
+  const currentItems = separateArray?.slice(indexOfFirstItem, indexOfLastItem);
 
   const getAdjacentPages = (currentPage, total, adjacent = 2) => {
     let pages = [];
@@ -80,34 +91,28 @@ const AllReadIndexesPage = () => {
       setCurrentPage(pageNumber);
     }
   };
-  // const handleInputChange = (e) => {
-  //   const { name, value } = e.target;
 
-  //   setSearchValues({
-  //     ...searchValues,
-  //     [name]: value,
-  //   });
-  // };
-  // useEffect(() => {
-  //   const filtered = dataArray.filter((item) => {
-  //     for (let key in searchValues) {
-  //       const searchValue = searchValues[key].toLowerCase();
-  //       const itemValue = item[key] ? item[key].toString().toLowerCase() : ""; // Eğer item[key] null ise, boş bir string olarak kabul edilir
-  //       if (searchValue && !itemValue.startsWith(searchValue)) {
-  //         return false;
-  //       }
-  //     }
-  //     return true;
-  //   });
-  //   setFilteredData(filtered);
-  // }, [searchValues]);
+  const renderTableRows = () => {
+    return currentItems.map((item, index) => (
+      <tr key={index}>
+        <td>{item.seriNo}</td>
+        <td>{item.sayacAdi}</td>
+        <td>{formatTarih(item.maxDemandTarih)}</td>
+        <td>{formatLocaleString(item.aktif)}</td>
+        <td>{formatLocaleString(item.tarife1)}</td>
+        <td>{formatLocaleString(item.tarife2)}</td>
+        <td>{formatLocaleString(item.tarife3)}</td>
+        <td>{formatLocaleString(item.enduktif)}</td>
+        <td>{formatLocaleString(item.kapasitif)}</td>
+        <td>{calculateEndAktifRatio(item.enduktif, item.aktif)}</td>
+        <td>{calculateEndAktifRatio(item.kapasitif, item.aktif)}</td>
+        <td>{donemGetir(item.donemAy, item.donemYil)}</td>
+      </tr>
+    ));
+  };
 
-  const itemsPerPage = 10;
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredData?.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(dataArray.length / itemsPerPage);
-  console.log(currentItems);
+  console.log(separateArray);
+
   return (
     <div
       style={{ color: "white", overflowY: "auto" }}
@@ -134,43 +139,27 @@ const AllReadIndexesPage = () => {
               </tr>
             </thead>
             <tbody>
-              {currentItems.map((item, index) =>
-                item.sayacGecmisEndeks?.map((endeks, subIndex) => (
-                  <tr key={`${index}-${subIndex}`}>
-                    <td>{item.seriNo}</td>
-                    <td>{item.sayacAdi}</td>
-                    <td>{formatTarih(endeks?.maxDemandTarih)}</td>
-                    <td>{formatLocaleString(endeks?.aktif)}</td>
-                    <td>{formatLocaleString(endeks?.tarife1)}</td>
-                    <td>{formatLocaleString(endeks?.tarife2)}</td>
-                    <td>{formatLocaleString(endeks?.tarife3)}</td>
-                    <td>{formatLocaleString(endeks?.enduktif)}</td>
-                    <td>{formatLocaleString(endeks?.kapasitif)}</td>
-                    <td>
-                      {calculateEndAktifRatio(endeks?.enduktif, endeks?.aktif)}
-                    </td>
-                    <td>
-                      {calculateEndAktifRatio(endeks?.kapasitif, endeks?.aktif)}
-                    </td>
-                    <td>{donemGetir(endeks?.donemAy, endeks?.donemYil)} </td>
-                  </tr>
-                ))
+              {loading ? (
+                <tr>
+                  <td colSpan="12" className={styles.loadingSpinner}>
+                    <Spin
+                      indicator={
+                        <LoadingOutlined style={{ fontSize: 24 }} spin />
+                      }
+                    />
+                  </td>
+                </tr>
+              ) : (
+                renderTableRows()
               )}
             </tbody>
           </table>
-          {loading && ( // Loading durumunda spinner'ı göster
-            <div className={styles.loadingSpinner}>
-              <Spin
-                indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />}
-              />
-            </div>
-          )}
         </div>
       </div>
       <div className={styles.pages}>
         <p className={styles.pagenumbers}>
           Sayfa {currentPage} / {totalPages}{" "}
-          <span>({dataArray.length} öğe)</span>
+          <span>({separateArray.length} öğe)</span>
         </p>
         <div className={styles.buttons}>{renderPaginationButtons()}</div>
       </div>

@@ -14,7 +14,7 @@
   font-family: "Roboto", sans-serif;
   font-weight: 400;
   font-style: normal;
-  padding: 0.5em 0.2em;
+
   text-align: left;
 }
 /* Tablo başlık stil */
@@ -22,6 +22,7 @@
   color: #fff;
   font-size: 1em;
   font-weight: bold;
+  padding-right: 2em;
 }
 
 .table-container tr {
@@ -106,6 +107,7 @@ button {
 }
 .buttons {
   display: flex;
+
   gap: 0em 1em;
 }
 button:hover {
@@ -115,7 +117,7 @@ button:hover {
 
 .activePageButton {
   background-color: #10305a;
-  color: #fff !;
+  color: #fff;
 }
 .table-container input {
   outline: none;
@@ -137,4 +139,21 @@ button:hover {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 9999;
+}
+.table-container td:nth-child(3) {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  justify-content: center;
+  align-items: center;
+  font-size: 1em;
+  padding: 0.4em 1em;
+}
+.table-container td:nth-child(2) {
+  font-size: 1em;
+  padding: 0em 2em;
+}
+.table-container th:nth-child(2) {
+  font-size: 1em;
+  padding-left: 2em;
 }

@@ -115,7 +115,7 @@ button:hover {
 
 .activePageButton {
   background-color: #10305a;
-  color: #fff !;
+  color: #fff;
 }
 .table-container input {
   outline: none;
