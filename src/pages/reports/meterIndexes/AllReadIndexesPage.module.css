@@ -23,6 +23,7 @@
   font-size: 1em;
   font-weight: bold;
   padding-right: 2em;
+  padding-bottom: 1em;
 }
 
 .table-container tr {
@@ -63,7 +64,7 @@
   border: none;
 }
 .table-container thead {
-  border-bottom: 3px solid #10305a;
+  border-bottom: 2px solid #10305a;
 }
 .pagenumbers {
   color: #f9fafa;
@@ -100,10 +101,15 @@ button {
   background-color: #0f2545;
   border-radius: 0.8em;
 }
-.data-table-page-container h3 {
+h3 {
   text-align: center;
-  font-size: 2em;
-  color: #ffffff;
+  font-size: 1.3em;
+  color: #f9fafa;
+  background-color: #0f2545;
+  margin: 0.5em auto;
+  width: 20%;
+  padding: 0.5em;
+  border-radius: 0.4em;
 }
 .buttons {
   display: flex;
@@ -130,7 +136,7 @@ button:hover {
   font-size: 0.8em;
 }
 .table-container tbody tr td {
-  padding: 1em 0.2em;
+  padding: 1.2em 0.2em;
 }
 
 .loadingSpinner {
@@ -156,4 +162,8 @@ button:hover {
 .table-container th:nth-child(2) {
   font-size: 1em;
   padding-left: 2em;
+}
+
+.filter-buttons {
+  display: flex;
 }

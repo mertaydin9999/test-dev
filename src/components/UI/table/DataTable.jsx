@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import styles from "./DataTable.module.css";
-import Button from "../button/Button";
+import ButtonInput from "../button/ButtonInput";
 import axios from "axios";
 import {
   SearchOutlined,
@@ -71,19 +71,23 @@ const DataTable = () => {
     const adjacentPages = getAdjacentPages(currentPage, totalPages);
     return (
       <>
-        <Button onClick={() => changePage(1)}>İlk</Button>
-        <Button onClick={() => changePage(currentPage - 1)}>Önceki</Button>
+        <ButtonInput onClick={() => changePage(1)}>İlk</ButtonInput>
+        <ButtonInput onClick={() => changePage(currentPage - 1)}>
+          Önceki
+        </ButtonInput>
         {adjacentPages.map((page) => (
-          <Button
+          <ButtonInput
             key={page}
             onClick={() => changePage(page)}
             className={page === currentPage ? styles.activePageButton : ""}
           >
             {page}
-          </Button>
+          </ButtonInput>
         ))}
-        <Button onClick={() => changePage(currentPage + 1)}>Sonraki</Button>
-        <Button onClick={() => changePage(totalPages)}>Son</Button>
+        <ButtonInput onClick={() => changePage(currentPage + 1)}>
+          Sonraki
+        </ButtonInput>
+        <ButtonInput onClick={() => changePage(totalPages)}>Son</ButtonInput>
       </>
     );
   };
@@ -112,8 +116,10 @@ const DataTable = () => {
 
   return (
     <>
+      <div>
+        <h3>Sayac </h3>
+      </div>
       <div className={styles["data-table-page-container"]}>
-        <h3>Sayac</h3>
         <div className={styles["table-scroll"]}>
           <div className={styles["table-container-wrapper"]}>
             <table className={styles["table-container"]}>
