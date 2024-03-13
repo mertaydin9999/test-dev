@@ -16,6 +16,7 @@ import {
 import { Button, Modal, Spin, Table } from "antd";
 import FilterTable from "../../../components/UI/table/FilterTable";
 import InputFilter from "../../../components/UI/table/InputFilter";
+
 const baseUrl = "http://10.0.0.101:8088/Makel/OsosApi/Sayac/SayacAyGecisEndeks";
 const AllReadIndexesPage = () => {
   const [open, setOpen] = useState(false);
@@ -31,7 +32,7 @@ const AllReadIndexesPage = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`${baseUrl}/01.01.2023/01.15.2024`);
+        const response = await axios.get(`${baseUrl}/01.01.2023/03.15.2024`);
         setDataArray(response.data);
       } catch (error) {
         console.log(error);
@@ -62,6 +63,11 @@ const AllReadIndexesPage = () => {
   useEffect(() => {
     setFilteredData(dataArray); // İlk başta veriyi doldur
   }, [dataArray]);
+  useEffect(() => {
+    const filteredData = filterDataByDateRange(dataArray, startDate, endDate);
+    setFilteredData(filteredData);
+    console.log(filteredData, "filtered data");
+  }, [dataArray, startDate, endDate]);
 
   const separateArray = mapToSeparateArray(dataArray);
   const itemsPerPage = 10;
@@ -127,7 +133,6 @@ const AllReadIndexesPage = () => {
       </tr>
     ));
   };
-  //Modal alani-------------------
 
   const showModal = () => {
     setOpen(true);
@@ -156,16 +161,12 @@ const AllReadIndexesPage = () => {
 
   const filterDataByDateRange = (data, startDate, endDate) => {
     const filteredDateArray = [];
-    let keyIndex = 0; // Key için başlangıç indeksi
     const startDateObj = new Date(startDate);
     const endDateObj = new Date(endDate);
-    console.log(startDateObj, endDateObj, "start end");
     data.forEach((item) => {
       const { sayacAdi, sayacGecmisEndeks, ...rest } = item;
       sayacGecmisEndeks.forEach((endeks) => {
-        console.log(endeks, "endeks");
         const indexDate = new Date(endeks.maxDemandTarih);
-        console.log(indexDate, "indeks");
         if (indexDate >= startDateObj && indexDate <= endDateObj)
           filteredDateArray.push({
             sayacAdi,
@@ -177,11 +178,6 @@ const AllReadIndexesPage = () => {
     console.log(filteredDateArray, "filteredDateArray");
     return filteredDateArray;
   };
-  useEffect(() => {
-    const filteredData = filterDataByDateRange(dataArray, startDate, endDate);
-    setFilteredData(filteredData);
-    console.log(filteredData, "filtered data");
-  }, [dataArray, startDate, endDate]);
 
   return (
     <>
@@ -219,7 +215,6 @@ const AllReadIndexesPage = () => {
             alignItems: "center",
             margin: "1em",
           }}
-          onClick={showModal}
         >
           <ExportOutlined
             style={{

@@ -90,7 +90,7 @@ const RootLayout = () => {
             backgroundColor: "",
           }}
         >
-          <Outlet />;
+          <Outlet />
         </Content>
       </Layout>
     </Layout>

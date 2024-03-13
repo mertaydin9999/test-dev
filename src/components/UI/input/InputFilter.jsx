@@ -1,9 +1,15 @@
-import React from 'react'
+import React from "react";
 
-const InputFilter = () => {
+const InputFilter = ({ type, name, placeholder, value, onChange }) => {
   return (
-    <div>InputFilter</div>
-  )
-}
+    <input
+      type={type}
+      name={name}
+      placeholder={placeholder}
+      value={value}
+      onChange={onChange}
+    />
+  );
+};
 
-export default InputFilter
+export default InputFilter;
