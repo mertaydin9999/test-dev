@@ -116,9 +116,6 @@ const DataTable = () => {
 
   return (
     <>
-      <div>
-        <h3>Sayac </h3>
-      </div>
       <div className={styles["data-table-page-container"]}>
         <div className={styles["table-scroll"]}>
           <div className={styles["table-container-wrapper"]}>

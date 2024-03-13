@@ -16,18 +16,22 @@ import {
 import { Button, Modal, Spin, Table } from "antd";
 import FilterTable from "../../../components/UI/table/FilterTable";
 import InputFilter from "../../../components/UI/table/InputFilter";
-const url =
-  "http://10.0.0.101:8088/Makel/OsosApi/Sayac/SayacAyGecisEndeks/01.01.2024/03.11.2024";
+const baseUrl = "http://10.0.0.101:8088/Makel/OsosApi/Sayac/SayacAyGecisEndeks";
 const AllReadIndexesPage = () => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [dataArray, setDataArray] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedData, setSelectedData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [startDate, setStartDate] = useState("01.01.2024");
+  const [endDate, setEndDate] = useState("01.15.2024");
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
-        const response = await axios.get(url);
+        const response = await axios.get(`${baseUrl}/01.01.2023/01.15.2024`);
         setDataArray(response.data);
       } catch (error) {
         console.log(error);
@@ -35,9 +39,8 @@ const AllReadIndexesPage = () => {
         setLoading(false);
       }
     };
-
-    fetchData();
-  }, []);
+    fetchData(startDate, endDate);
+  }, [startDate, endDate]);
   const mapToSeparateArray = (data) => {
     const separateArray = [];
     let keyIndex = 0; // Key için başlangıç indeksi
@@ -56,13 +59,16 @@ const AllReadIndexesPage = () => {
 
     return separateArray;
   };
+  useEffect(() => {
+    setFilteredData(dataArray); // İlk başta veriyi doldur
+  }, [dataArray]);
 
   const separateArray = mapToSeparateArray(dataArray);
   const itemsPerPage = 10;
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const totalPages = Math.ceil(separateArray.length / itemsPerPage);
-  const currentItems = separateArray?.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredData?.length / itemsPerPage);
+  const currentItems = filteredData?.slice(indexOfFirstItem, indexOfLastItem);
 
   const getAdjacentPages = (currentPage, total, adjacent = 2) => {
     let pages = [];
@@ -126,22 +132,59 @@ const AllReadIndexesPage = () => {
   const showModal = () => {
     setOpen(true);
   };
-  const handleOk = () => {
+  const handleOk = async () => {
     setLoading(true);
-    setTimeout(() => {
+    try {
+      const response = await axios.get(`${baseUrl}/${startDate}/${endDate}`);
+      setDataArray(response.data);
+      console.log(dataArray, "son cekme");
+    } catch (error) {
+      console.log(error);
+    } finally {
       setLoading(false);
       setOpen(false);
-    }, 3000);
+    }
   };
   const handleCancel = () => {
     setOpen(false);
   };
+  const handleSelectedData = (rows, dateRange) => {
+    const date = dateRange;
+    setStartDate(date[0]);
+    setEndDate(date[1]);
+  };
+
+  const filterDataByDateRange = (data, startDate, endDate) => {
+    const filteredDateArray = [];
+    let keyIndex = 0; // Key için başlangıç indeksi
+    const startDateObj = new Date(startDate);
+    const endDateObj = new Date(endDate);
+    console.log(startDateObj, endDateObj, "start end");
+    data.forEach((item) => {
+      const { sayacAdi, sayacGecmisEndeks, ...rest } = item;
+      sayacGecmisEndeks.forEach((endeks) => {
+        console.log(endeks, "endeks");
+        const indexDate = new Date(endeks.maxDemandTarih);
+        console.log(indexDate, "indeks");
+        if (indexDate >= startDateObj && indexDate <= endDateObj)
+          filteredDateArray.push({
+            sayacAdi,
+            ...rest,
+            ...endeks,
+          });
+      });
+    });
+    console.log(filteredDateArray, "filteredDateArray");
+    return filteredDateArray;
+  };
+  useEffect(() => {
+    const filteredData = filterDataByDateRange(dataArray, startDate, endDate);
+    setFilteredData(filteredData);
+    console.log(filteredData, "filtered data");
+  }, [dataArray, startDate, endDate]);
 
   return (
     <>
-      <div>
-        <h3>Sayac Endeksleri</h3>
-      </div>
       <div className={styles["filter-buttons"]}>
         <Button
           type="primary"
@@ -186,7 +229,6 @@ const AllReadIndexesPage = () => {
           Cikart
         </Button>
       </div>
-
       <Modal
         open={open}
         title="Filtreleme Ekrani"
@@ -212,7 +254,7 @@ const AllReadIndexesPage = () => {
             type="primary"
             style={{
               backgroundColor: "#0A51AB",
-              margin: "0 75px 0 0px ",
+              margin: "0 25px 0 0px ",
               padding: "0em 5em",
             }}
             loading={loading}
@@ -222,9 +264,11 @@ const AllReadIndexesPage = () => {
           </Button>,
         ]}
       >
-        <InputFilter dataSource={separateArray} />
+        <InputFilter
+          dataSource={separateArray}
+          onSelectedData={handleSelectedData}
+        />
       </Modal>
-
       <div
         style={{ color: "white", overflowY: "auto" }}
         className={styles["data-table-page-container"]}
@@ -269,7 +313,9 @@ const AllReadIndexesPage = () => {
         <div className={styles.pages}>
           <p className={styles.pagenumbers}>
             Sayfa {currentPage} / {totalPages}{" "}
-            <span>({separateArray.length} öğe)</span>
+            <span>
+              ({(filteredData ? filteredData : dataArray).length} öğe)
+            </span>
           </p>
           <div className={styles.buttons}>{renderPaginationButtons()}</div>
         </div>

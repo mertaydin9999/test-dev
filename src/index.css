@@ -2,9 +2,10 @@
 .open-sans-h1 {
   font-family: "Open Sans", sans-serif;
   font-optical-sizing: auto;
-  font-weight: 800;
+  font-weight: 700;
   font-style: normal;
   font-variation-settings: "wdth" 100;
+  font-size: 1.5em;
 }
 * {
   box-sizing: border-box;
@@ -12,7 +13,7 @@
   padding: 0em 0em;
 }
 body {
-  background-color: #141414 !important;
+  background-color: #fff !important;
   overflow: auto;
 }
 header {

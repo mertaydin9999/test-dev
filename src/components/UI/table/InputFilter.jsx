@@ -1,19 +1,37 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { SearchOutlined } from "@ant-design/icons";
 import { Button, Input, Space, Table, Checkbox, DatePicker } from "antd";
 import Highlighter from "react-highlight-words";
-const InputFilter = ({ dataSource }) => {
+import styles from "./InputFilter.module.css";
+const { RangePicker } = DatePicker;
+
+const InputFilter = ({ dataSource, onSelectedData }) => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const [selectionType, setSelectionType] = useState("checkbox");
+  const [dateRange, setDateRange] = useState([]);
+  const [selectedRows, setSelectedRows] = useState([]);
+  const onChangeDatePicker = (dates, dateStrings) => {
+    const formattedDateStrings = dateStrings.map((date) => {
+      const [day, month, year] = date.split("-").reverse();
+      return `${month}.${day}.${year}`;
+    });
+    setDateRange(formattedDateStrings);
+    onSelectedData(selectedRows, formattedDateStrings);
+  };
+
+  const handleRowSelection = (selectedRows) => {
+    setSelectedRows(selectedRows);
+  };
   const searchInput = useRef(null);
 
-  const onChangeDatePicker = (date, dateString) => {
-    console.log(date, dateString);
-  };
   const onChangeCheckbox = (e) => {
     console.log(`checked = ${e.target.checked}`);
   };
+  useEffect(() => {
+    // selectedRows ve dateRange değişkenleri değiştiğinde onSelectedData fonksiyonunu çağır
+    onSelectedData(selectedRows, dateRange);
+  }, [selectedRows, dateRange]);
 
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
@@ -22,10 +40,9 @@ const InputFilter = ({ dataSource }) => {
         "selectedRows: ",
         selectedRows
       );
+      handleRowSelection(selectedRows);
     },
     getCheckboxProps: (record) => ({
-      disabled: record.name === "Disabled User",
-      // Column configuration not to be checked
       name: record.name,
     }),
   };
@@ -195,6 +212,11 @@ const InputFilter = ({ dataSource }) => {
       key: "1",
     },
   ];
+  const getRowClassName = () => {
+    // Tüm satırlar için aynı sınıfı döndür
+    return styles["same-color-row"];
+  };
+
   return (
     <div
       style={{
@@ -220,6 +242,7 @@ const InputFilter = ({ dataSource }) => {
           size="small"
           columns={columns}
           dataSource={dataSource}
+          pagination={{ pageSize: 8 }}
         />
       </div>
       <div
@@ -241,7 +264,9 @@ const InputFilter = ({ dataSource }) => {
             size="small"
             columnWidth={0}
             columns={columnsLocation}
+            pagination={{ pageSize: 8 }}
             dataSource={dataSource}
+            rowClassName={getRowClassName}
           />
         </div>
       </div>
@@ -263,25 +288,7 @@ const InputFilter = ({ dataSource }) => {
           }}
         >
           <span>Baslangic Tarihi</span>
-          <DatePicker onChange={onChangeDatePicker} />
-        </div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: ".5em",
-          }}
-        >
-          <span>Bitis Tarihi</span>
-          <DatePicker onChange={onChangeDatePicker} />
-        </div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: ".5em",
-          }}
-        >
+          <RangePicker onChange={onChangeDatePicker} />
           <Checkbox onChange={onChangeCheckbox}>
             Enerji Oranlarini Goster
           </Checkbox>

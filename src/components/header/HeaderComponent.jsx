@@ -10,7 +10,7 @@ const HeaderComponent = () => {
             alignItems: "center",
           }}
         >
-          <img src={logo} width={"80%"} alt="" />
+          <img src={logo} width={"50%"} alt="" />
         </a>
       </div>
       <div>

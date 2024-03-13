@@ -49,7 +49,7 @@ const RootLayout = () => {
     <Layout
       style={{
         minHeight: "100vh",
-        background: "#141414",
+        background: "#fff",
       }}
     >
       <Sider
@@ -72,7 +72,7 @@ const RootLayout = () => {
       <Layout
         style={{
           padding: 0,
-          backgroundColor: "#111b2b",
+          backgroundColor: "#fff",
         }}
       >
         <Header
