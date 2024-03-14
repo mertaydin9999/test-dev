@@ -121,11 +121,14 @@ button:hover {
   outline: none;
   padding: 0.6em 0.3em;
   width: 70%;
-  background-color: #a5d5fa;
+  background-color: #10305a;
   border-radius: 0.3em;
   border: 1px solid #0a51ab;
-  color: #314759;
+  color: #f6f6f6;
   font-size: 0.8em;
+}
+.table-container input::placeholder {
+  color: #9d9a9a;
 }
 .table-container tbody tr td {
   padding: 1em 0.2em;
@@ -137,4 +140,14 @@ button:hover {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 9999;
+}
+.header-div h2 {
+  font-weight: 400;
+  background-color: #15325b;
+  padding: 0.4em;
+  width: 98%;
+  margin: 1em auto;
+  border-radius: 0.2em;
+  color: #f6f6f6;
+  text-align: center;
 }

@@ -2,6 +2,10 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import styles from "./AllReadIndexesPage.module.css";
 import ButtonInput from "../../../components/UI/button/ButtonInput";
+import { FaFilter } from "react-icons/fa";
+import { FaFileExport } from "react-icons/fa6";
+import { FaListAlt } from "react-icons/fa";
+
 import {
   donemGetir,
   formatTarih,
@@ -181,62 +185,22 @@ const AllReadIndexesPage = () => {
 
   return (
     <>
-      <div className={styles["filter-buttons"]}>
-        <Button
-          type="primary"
-          style={{
-            backgroundColor: "#0F2545",
-            border: "none",
-            display: "flex",
-            flexDirection: "column",
-            height: "4em",
-            justifyContent: "center",
-            alignItems: "center",
-            margin: "1em",
-          }}
-          onClick={showModal}
-        >
-          <ControlOutlined
-            style={{
-              fontSize: "1.5em",
-            }}
-          />
-          Filtrele
-        </Button>
-        <Button
-          type="primary"
-          style={{
-            backgroundColor: "#0F2545",
-            border: "none",
-            display: "flex",
-            flexDirection: "column",
-            height: "4em",
-            justifyContent: "center",
-            alignItems: "center",
-            margin: "1em",
-          }}
-        >
-          <ExportOutlined
-            style={{
-              fontSize: "1.5em",
-            }}
-          />
-          Cikart
-        </Button>
+      <div className={styles["header-div"]}>
+        <h2>Okunan Tum Endeks Bilgileri</h2>
       </div>
       <Modal
         open={open}
         title="Filtreleme Ekrani"
         onOk={handleOk}
         onCancel={handleCancel}
-        width={1400}
+        width={1200}
         footer={[
           <Button
             key="cancel"
             type="primary"
             style={{
               backgroundColor: "#e84749",
-              margin: "0 20px 0 0px ",
+              margin: "20px 20px 0 0px ",
               padding: "0em 5em",
             }}
             loading={loading}
@@ -249,7 +213,7 @@ const AllReadIndexesPage = () => {
             type="primary"
             style={{
               backgroundColor: "#0A51AB",
-              margin: "0 25px 0 0px ",
+              margin: "0 0px 0 0px ",
               padding: "0em 5em",
             }}
             loading={loading}
@@ -270,6 +234,20 @@ const AllReadIndexesPage = () => {
       >
         <div className={styles["table-scroll"]}>
           <div className={styles["table-container-wrapper"]}>
+            <div className={styles["filter-buttons"]}>
+              <ButtonInput onClick={showModal}>
+                <FaFilter />
+                Filtrele
+              </ButtonInput>
+              <ButtonInput>
+                <FaFileExport />
+                Cikart
+              </ButtonInput>
+              <ButtonInput>
+                <FaListAlt />
+                Sutunlari Goster
+              </ButtonInput>
+            </div>
             <table className={styles["table-container"]}>
               <thead>
                 <tr>

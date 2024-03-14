@@ -20,10 +20,9 @@ header {
   display: flex;
   flex-direction: row;
   padding: 1em 0em;
-
   justify-content: space-between;
   align-items: center;
-  width: 90%;
+  width: 100%;
   margin: 0 auto;
 }
 
@@ -40,3 +39,21 @@ a {
   background-color: white !important;
 }
 /*----------------------------DATAGRID-------------a lari duzenle------------*/
+.ant-pagination-item-link {
+  color: #fff !important; /* Sayfa numaralarının rengini burada değiştirin */
+}
+
+.logout-icon:hover {
+  cursor: pointer;
+  color: red;
+}
+.my-account-icon:hover {
+  cursor: pointer;
+  color: #33bcb7;
+}
+.my-account-icon {
+  color: #e6e6e6;
+}
+.logout-icon {
+  color: #e6e6e6;
+}

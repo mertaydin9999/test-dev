@@ -29,7 +29,6 @@ const InputFilter = ({ dataSource, onSelectedData }) => {
     console.log(`checked = ${e.target.checked}`);
   };
   useEffect(() => {
-    // selectedRows ve dateRange değişkenleri değiştiğinde onSelectedData fonksiyonunu çağır
     onSelectedData(selectedRows, dateRange);
   }, [selectedRows, dateRange]);
 
@@ -71,7 +70,7 @@ const InputFilter = ({ dataSource, onSelectedData }) => {
       >
         <Input
           ref={searchInput}
-          placeholder={`Search ${dataIndex}`}
+          placeholder={`Ara ...`}
           value={selectedKeys[0]}
           onChange={(e) =>
             setSelectedKeys(e.target.value ? [e.target.value] : [])
@@ -87,9 +86,10 @@ const InputFilter = ({ dataSource, onSelectedData }) => {
             type="primary"
             onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
             icon={<SearchOutlined />}
-            size="small"
+            size="medium"
             style={{
               width: 90,
+              color: "#f6f6f6",
             }}
           >
             Filtrele
@@ -131,7 +131,7 @@ const InputFilter = ({ dataSource, onSelectedData }) => {
     filterIcon: (filtered) => (
       <SearchOutlined
         style={{
-          color: filtered ? "#1677ff" : undefined,
+          color: filtered ? "#1677ff" : "#f6f6f6",
         }}
       />
     ),
@@ -230,10 +230,18 @@ const InputFilter = ({ dataSource, onSelectedData }) => {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "",
-          border: "1px solid grey",
+          borderRight: "1px solid white",
+          paddingRight: "1em",
         }}
       >
-        <div>SAYAC</div>
+        <p
+          style={{
+            color: "#f6f6f6",
+            fontSize: "1.5em",
+          }}
+        >
+          Sayac
+        </p>
         <Table
           rowSelection={{
             type: selectionType,
@@ -242,65 +250,48 @@ const InputFilter = ({ dataSource, onSelectedData }) => {
           size="small"
           columns={columns}
           dataSource={dataSource}
-          pagination={{ pageSize: 8 }}
+          pagination={{
+            pageSize: 5,
+            style: {
+              backgroundColor: "#15417E",
+              color: "#f6f6f6",
+              borderRadius: ".3em",
+            },
+            size: "default",
+            showSizeChanger: false,
+          }}
+          rowClassName={getRowClassName}
         />
       </div>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "",
-          border: "1px solid grey",
-        }}
-      >
-        <div>LOKASYON</div>
-        <div>
-          <Table
-            rowSelection={{
-              type: selectionType,
-              ...rowSelection,
-            }}
-            size="small"
-            columnWidth={0}
-            columns={columnsLocation}
-            pagination={{ pageSize: 8 }}
-            dataSource={dataSource}
-            rowClassName={getRowClassName}
-          />
-        </div>
-      </div>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "2em",
-          border: "1px solid black",
-          padding: "1em",
-        }}
-      >
-        <div>TARIH </div>
-        <div
+
+      <div className={styles["date-container-wrapper"]}>
+        <p
           style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: ".5em",
+            color: "#f6f6f6",
+            fontSize: "1.5em",
           }}
         >
-          <span>Baslangic Tarihi</span>
-          <RangePicker onChange={onChangeDatePicker} />
-          <Checkbox onChange={onChangeCheckbox}>
-            Enerji Oranlarini Goster
-          </Checkbox>
-          <Checkbox onChange={onChangeCheckbox}>
-            Demand Degerlerini Goster
-          </Checkbox>
-          <Checkbox onChange={onChangeCheckbox}>
-            Carpan Degerlerini Hesaba Kat
-          </Checkbox>
-          <Checkbox onChange={onChangeCheckbox}>
-            Okunamayan Sayaclarin Endeksini 0 goster
-          </Checkbox>
+          Tarih
+        </p>
+        <div className={styles["date-container"]}>
+          <p>Baslangic ve Bitis Tarihi </p>
+          <div className={styles["date-picker-div"]}>
+            <RangePicker onChange={onChangeDatePicker} />
+          </div>
+          <div className={styles["date-checkboxes"]}>
+            <Checkbox className={styles.checkbox} onChange={onChangeCheckbox}>
+              Enerji Oranlarini Goster
+            </Checkbox>
+            <Checkbox className={styles.checkbox} onChange={onChangeCheckbox}>
+              Demand Degerlerini Goster
+            </Checkbox>
+            <Checkbox className={styles.checkbox} onChange={onChangeCheckbox}>
+              Carpan Degerlerini Hesaba Kat
+            </Checkbox>
+            <Checkbox className={styles.checkbox} onChange={onChangeCheckbox}>
+              Okunamayan Sayaclarin Endeksini 0 goster
+            </Checkbox>
+          </div>
         </div>
       </div>
     </div>

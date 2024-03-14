@@ -14,31 +14,29 @@
   font-family: "Roboto", sans-serif;
   font-weight: 400;
   font-style: normal;
-
   text-align: left;
 }
-/* Tablo başlık stil */
 .table-container th {
-  color: #fff;
-  font-size: 1em;
+  color: #ffffff;
+  font-size: 1.1em;
   font-weight: bold;
-  padding-right: 2em;
-  padding-bottom: 1em;
+  background-color: #15417e;
+  padding: 1em 1em 1em 0.2em;
 }
 
 .table-container tr {
   font-size: 1em;
   background-color: #0f2545;
-  color: #ffffff;
+  color: #e6e6e6;
   border-bottom: 0.1em solid #10305a;
 }
 
 .table-scroll {
   overflow-x: scroll;
-  padding: 1em 0em;
+  padding: 0em 0em 1em 0em;
   display: flex; /* Yatay hizalama için flex kullanın */
   justify-content: center;
-  scrollbar-color: #0a51ab #0d3e7d;
+  scrollbar-color: #b7dcfa #15325b;
 }
 .page-num-list {
   display: flex;
@@ -56,8 +54,8 @@
 
 .table-container tbody tr:hover {
   cursor: pointer;
-  background-color: #a5d5fa;
-  color: #314759;
+  background-color: #375885;
+  color: #fff;
 }
 
 .table-container thead tr {
@@ -95,11 +93,9 @@ button {
   margin-top: 2em;
 }
 .data-table-page-container {
-  margin: 1em auto;
-  width: 98%;
+  margin: 0em auto;
+  width: 100%;
   padding: 1em;
-  background-color: #0f2545;
-  border-radius: 0.8em;
 }
 h3 {
   text-align: center;
@@ -122,8 +118,8 @@ button:hover {
 }
 
 .activePageButton {
-  background-color: #10305a;
-  color: #fff;
+  background-color: #a5d5fa;
+  color: #000000;
 }
 .table-container input {
   outline: none;
@@ -158,6 +154,7 @@ button:hover {
 .table-container td:nth-child(2) {
   font-size: 1em;
   padding: 0em 2em;
+  color: #fff;
 }
 .table-container th:nth-child(2) {
   font-size: 1em;
@@ -166,4 +163,35 @@ button:hover {
 
 .filter-buttons {
   display: flex;
+  gap: 0em 1em;
+  padding: 1em 0em;
+}
+.filter-buttons button {
+  display: flex;
+  align-items: center;
+  font-size: 1.1em;
+  gap: 0.5em;
+  background-color: #15417e;
+  color: #fff;
+}
+.filter-buttons button:hover {
+  display: flex;
+  align-items: center;
+  font-size: 1.1em;
+  gap: 0.5em;
+  background-color: #1554ad;
+  color: #fff;
+}
+.header-div {
+  text-align: center;
+  color: #fff;
+  padding-top: 1em;
+}
+.header-div h2 {
+  font-weight: 400;
+  background-color: #15325b;
+  padding: 0.4em;
+  width: 98%;
+  margin: 0em auto;
+  border-radius: 0.2em;
 }

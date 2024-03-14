@@ -1,3 +1,45 @@
-.same-color-row {
-  background-color: #fff;
+.same-color-row:hover {
+  cursor: pointer;
+  padding: 1em;
+}
+.date-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  padding: 1em;
+}
+.date-container p {
+  font-size: 0.8em;
+}
+.date-container .date-picker-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 2em;
+}
+.date-container-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+.date-container-wrapper p {
+  text-align: center;
+}
+.date-container-wrapper .date-container {
+  background-color: #0f2545;
+  color: #e6e6e6;
+  font-size: 1.5em;
+  border-radius: 0.5em;
+}
+
+.date-container-wrapper .date-container .date-checkboxes {
+  display: flex;
+  flex-direction: column;
+  color: #e6e6e6;
+  gap: 1em 0em;
+}
+.date-container-wrapper .date-container .date-checkboxes .checkbox {
+  color: #e6e6e6;
+}
+li a {
+  color: #fff !important;
 }
