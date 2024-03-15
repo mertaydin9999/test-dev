@@ -2,7 +2,28 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  background-color: #111a2c !important;
+  min-height: 100vh;
 }
 .error-container h1 {
-  font-size: 6em !important;
+  font-size: 7em !important;
+}
+.error-container p {
+  font-size: 1.4em;
+  color: #f6f6f6;
+}
+.error-container a {
+  font-size: 1.2em;
+  color: rgb(240, 74, 74);
+}
+.error-container > a,
+p,
+h1 {
+  font-family: "Open Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
+  font-size: 1.5em;
 }

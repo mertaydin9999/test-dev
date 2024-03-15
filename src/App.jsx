@@ -1,4 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { useState } from "react";
 import RootLayout from "./pages/RootLayout";
 import HomePage from "./pages/HomePage";
 import ErrorPage from "./pages/ErrorPage";
@@ -42,157 +43,165 @@ import ModemDigitalInputLogsPage from "./pages/reports/ModemDigitalInputLogsPage
 import CustomersPage from "./pages/users/CustomersPage";
 import UsersPage from "./pages/users/UsersPage";
 import WarningMessagePage from "./pages/warningMessage/WarningMessagePage";
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <RootLayout />,
-    errorElement: <ErrorPage />,
-    children: [
-      { path: "/", element: <HomePage /> },
-
-      { path: "/login", element: <LoginPage /> },
-      { path: "/my-account", element: <MyAccountPage /> },
-      {
-        path: "/loading-modem-command-job",
-        element: <LoadingModemCommandJobPage />,
-      },
-      { path: "/modem-parameters", element: <ModemParametersPage /> },
-      { path: "/packages-update", element: <PackagesUpdatePage /> },
-      { path: "/sms-control-page", element: <SmsControlPage /> },
-      { path: "/communication-unit", element: <CommunicationUnitPage /> },
-      { path: "/location", element: <LocationPage /> },
-      { path: "/meter", element: <MeterPage /> },
-      {
-        path: "/meters-without-transition",
-        element: <MetersWithoutTransitionPage />,
-      },
-      {
-        path: "/modem-signal-levels",
-        element: <ModemSignalLevelsPage />,
-      },
-      {
-        path: "/reading-success-rates",
-        element: <ReadingSuccessRatesPage />,
-      },
-      {
-        path: "/communication-logs",
-        element: <CommunicationLogsPage />,
-      },
-      {
-        path: "/latest-readings",
-        element: <LatestReadingsPage />,
-      },
-      {
-        path: "/new-reading",
-        element: <NewReadingPage />,
-      },
-      {
-        path: "/reading-results",
-        element: <ReadingResultsPage />,
-      },
-      {
-        path: "/csv-output",
-        element: <CsvOutputPage />,
-      },
-      {
-        path: "/mass-osf-form",
-        element: <MassOsfFormPage />,
-      },
-      {
-        path: "/all-read-indexes-product",
-        element: <AllReadIndexesProductPage />,
-      },
-      {
-        path: "/last-indexes-infos-product",
-        element: <LastIndexesInfosProductPage />,
-      },
-      {
-        path: "/load-profile-records-product",
-        element: <LoadProfileRecordsProductPage />,
-      },
-      {
-        path: "/month-end-consumptions-product",
-        element: <MonthEndConsumptionsProductPage />,
-      },
-      {
-        path: "/month-end-indexes-product",
-        element: <MonthEndIndexesProductPage />,
-      },
-      {
-        path: "/battery-status-and-chassis-cover-warnings",
-        element: <BatteryStatusAndChassisCoverWarningsPage />,
-      },
-      {
-        path: "/error-and-warnings-meter",
-        element: <ErrorAndWarningMeterPage />,
-      },
-      {
-        path: "/klemens-cover-warnings",
-        element: <KlemensCoverWarningsPage />,
-      },
-      {
-        path: "/phase-errors",
-        element: <PhaseErrorsPage />,
-      },
-      {
-        path: "/all-read-indexes",
-        element: <AllReadIndexesPage />,
-      },
-      {
-        path: "/end-of-month-indexes",
-        element: <EndOfMonthIndexesPage />,
-      },
-      {
-        path: "/last-index-infos",
-        element: <LastIndexInfosPage />,
-      },
-      {
-        path: "/load-profile-records",
-        element: <LoadProfileRecordsPage />,
-      },
-      {
-        path: "/month-end-consumptions",
-        element: <MonthEndConsumptionsPage />,
-      },
-      {
-        path: "/meter-clock-values",
-        element: <MeterClockValuesPage />,
-      },
-      {
-        path: "/current-and-voltage-info",
-        element: <CurrentAndVoltageInfoPage />,
-      },
-      {
-        path: "/dst-cancelled-meters",
-        element: <DstCancelledMetersPage />,
-      },
-      {
-        path: "/load-analysis",
-        element: <LoadAnalysisPage />,
-      },
-      {
-        path: "/modem-digital-input-logs",
-        element: <ModemDigitalInputLogsPage />,
-      },
-      {
-        path: "/customers",
-        element: <CustomersPage />,
-      },
-      {
-        path: "/users",
-        element: <UsersPage />,
-      },
-      {
-        path: "/warning-message",
-        element: <WarningMessagePage />,
-      },
-    ],
-  },
-]);
-
 function App() {
-  return <RouterProvider router={router} />;
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState({ username: "makel", password: "12345" });
+  const handleLogin = (data) => {
+    setIsLoggedIn(data);
+  };
+
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <RootLayout />,
+      errorElement: <ErrorPage />,
+      children: [
+        { path: "/", element: <HomePage /> },
+
+        { path: "/my-account", element: <MyAccountPage /> },
+        {
+          path: "/loading-modem-command-job",
+          element: <LoadingModemCommandJobPage />,
+        },
+        { path: "/modem-parameters", element: <ModemParametersPage /> },
+        { path: "/packages-update", element: <PackagesUpdatePage /> },
+        { path: "/sms-control-page", element: <SmsControlPage /> },
+        { path: "/communication-unit", element: <CommunicationUnitPage /> },
+        { path: "/location", element: <LocationPage /> },
+        { path: "/meter", element: <MeterPage /> },
+        {
+          path: "/meters-without-transition",
+          element: <MetersWithoutTransitionPage />,
+        },
+        {
+          path: "/modem-signal-levels",
+          element: <ModemSignalLevelsPage />,
+        },
+        {
+          path: "/reading-success-rates",
+          element: <ReadingSuccessRatesPage />,
+        },
+        {
+          path: "/communication-logs",
+          element: <CommunicationLogsPage />,
+        },
+        {
+          path: "/latest-readings",
+          element: <LatestReadingsPage />,
+        },
+        {
+          path: "/new-reading",
+          element: <NewReadingPage />,
+        },
+        {
+          path: "/reading-results",
+          element: <ReadingResultsPage />,
+        },
+        {
+          path: "/csv-output",
+          element: <CsvOutputPage />,
+        },
+        {
+          path: "/mass-osf-form",
+          element: <MassOsfFormPage />,
+        },
+        {
+          path: "/all-read-indexes-product",
+          element: <AllReadIndexesProductPage />,
+        },
+        {
+          path: "/last-indexes-infos-product",
+          element: <LastIndexesInfosProductPage />,
+        },
+        {
+          path: "/load-profile-records-product",
+          element: <LoadProfileRecordsProductPage />,
+        },
+        {
+          path: "/month-end-consumptions-product",
+          element: <MonthEndConsumptionsProductPage />,
+        },
+        {
+          path: "/month-end-indexes-product",
+          element: <MonthEndIndexesProductPage />,
+        },
+        {
+          path: "/battery-status-and-chassis-cover-warnings",
+          element: <BatteryStatusAndChassisCoverWarningsPage />,
+        },
+        {
+          path: "/error-and-warnings-meter",
+          element: <ErrorAndWarningMeterPage />,
+        },
+        {
+          path: "/klemens-cover-warnings",
+          element: <KlemensCoverWarningsPage />,
+        },
+        {
+          path: "/phase-errors",
+          element: <PhaseErrorsPage />,
+        },
+        {
+          path: "/all-read-indexes",
+          element: <AllReadIndexesPage />,
+        },
+        {
+          path: "/end-of-month-indexes",
+          element: <EndOfMonthIndexesPage />,
+        },
+        {
+          path: "/last-index-infos",
+          element: <LastIndexInfosPage />,
+        },
+        {
+          path: "/load-profile-records",
+          element: <LoadProfileRecordsPage />,
+        },
+        {
+          path: "/month-end-consumptions",
+          element: <MonthEndConsumptionsPage />,
+        },
+        {
+          path: "/meter-clock-values",
+          element: <MeterClockValuesPage />,
+        },
+        {
+          path: "/current-and-voltage-info",
+          element: <CurrentAndVoltageInfoPage />,
+        },
+        {
+          path: "/dst-cancelled-meters",
+          element: <DstCancelledMetersPage />,
+        },
+        {
+          path: "/load-analysis",
+          element: <LoadAnalysisPage />,
+        },
+        {
+          path: "/modem-digital-input-logs",
+          element: <ModemDigitalInputLogsPage />,
+        },
+        {
+          path: "/customers",
+          element: <CustomersPage />,
+        },
+        {
+          path: "/users",
+          element: <UsersPage />,
+        },
+        {
+          path: "/warning-message",
+          element: <WarningMessagePage />,
+        },
+      ],
+    },
+    {
+      path: "/login",
+      element: <LoginPage handleLogin={handleLogin} user={user} />,
+    },
+  ]);
+
+  return <RouterProvider router={router}></RouterProvider>;
 }
 
 export default App;

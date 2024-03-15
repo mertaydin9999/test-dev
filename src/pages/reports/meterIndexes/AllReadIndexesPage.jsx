@@ -1,26 +1,18 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import styles from "./AllReadIndexesPage.module.css";
-import ButtonInput from "../../../components/UI/button/ButtonInput";
 import { FaFilter } from "react-icons/fa";
 import { FaFileExport } from "react-icons/fa6";
 import { FaListAlt } from "react-icons/fa";
-
-import {
-  donemGetir,
-  formatTarih,
-  formatLocaleString,
-  calculateEndAktifRatio,
-} from "../../../utils/dataFunctions";
-import {
-  LoadingOutlined,
-  ControlOutlined,
-  ExportOutlined,
-} from "@ant-design/icons";
-import { Button, Modal, Spin, Table } from "antd";
-import FilterTable from "../../../components/UI/table/FilterTable";
+import { LoadingOutlined } from "@ant-design/icons";
+import { Button, Modal, Spin } from "antd";
+import RenderPaginationButtons from "../../../components/UI/pagination/Pagination";
+import { filterDataByDateRange } from "../../../utils/dataFunctions";
 import InputFilter from "../../../components/UI/table/InputFilter";
-
+import RenderTableRows from "../../../components/UI/table/RenderTableRows";
+import ButtonInput from "../../../components/UI/button/ButtonInput";
+import { useLocation } from "react-router-dom";
+import { pageHeader } from "../../../utils/dataFunctions";
 const baseUrl = "http://10.0.0.101:8088/Makel/OsosApi/Sayac/SayacAyGecisEndeks";
 const AllReadIndexesPage = () => {
   const [open, setOpen] = useState(false);
@@ -31,6 +23,8 @@ const AllReadIndexesPage = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [startDate, setStartDate] = useState("01.01.2024");
   const [endDate, setEndDate] = useState("01.15.2024");
+  const location = useLocation();
+  const currentUrl = location.pathname;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -89,53 +83,11 @@ const AllReadIndexesPage = () => {
     }
     return pages;
   };
-  const renderPaginationButtons = () => {
-    const adjacentPages = getAdjacentPages(currentPage, totalPages);
-    return (
-      <>
-        <ButtonInput onClick={() => changePage(1)}>İlk</ButtonInput>
-        <ButtonInput onClick={() => changePage(currentPage - 1)}>
-          Önceki
-        </ButtonInput>
-        {adjacentPages.map((page) => (
-          <ButtonInput
-            key={page}
-            onClick={() => changePage(page)}
-            className={page === currentPage ? styles.activePageButton : ""}
-          >
-            {page}
-          </ButtonInput>
-        ))}
-        <ButtonInput onClick={() => changePage(currentPage + 1)}>
-          Sonraki
-        </ButtonInput>
-        <ButtonInput onClick={() => changePage(totalPages)}>Son</ButtonInput>
-      </>
-    );
-  };
+
   const changePage = (pageNumber) => {
     if (pageNumber >= 1 && pageNumber <= totalPages) {
       setCurrentPage(pageNumber);
     }
-  };
-
-  const renderTableRows = () => {
-    return currentItems.map((item, index) => (
-      <tr key={index}>
-        <td>{item.seriNo}</td>
-        <td>{item.sayacAdi}</td>
-        <td>{formatTarih(item.maxDemandTarih)}</td>
-        <td>{formatLocaleString(item.aktif)}</td>
-        <td>{formatLocaleString(item.tarife1)}</td>
-        <td>{formatLocaleString(item.tarife2)}</td>
-        <td>{formatLocaleString(item.tarife3)}</td>
-        <td>{formatLocaleString(item.enduktif)}</td>
-        <td>{formatLocaleString(item.kapasitif)}</td>
-        <td>{calculateEndAktifRatio(item.enduktif, item.aktif)}</td>
-        <td>{calculateEndAktifRatio(item.kapasitif, item.aktif)}</td>
-        <td>{donemGetir(item.donemAy, item.donemYil)}</td>
-      </tr>
-    ));
   };
 
   const showModal = () => {
@@ -163,30 +115,10 @@ const AllReadIndexesPage = () => {
     setEndDate(date[1]);
   };
 
-  const filterDataByDateRange = (data, startDate, endDate) => {
-    const filteredDateArray = [];
-    const startDateObj = new Date(startDate);
-    const endDateObj = new Date(endDate);
-    data.forEach((item) => {
-      const { sayacAdi, sayacGecmisEndeks, ...rest } = item;
-      sayacGecmisEndeks.forEach((endeks) => {
-        const indexDate = new Date(endeks.maxDemandTarih);
-        if (indexDate >= startDateObj && indexDate <= endDateObj)
-          filteredDateArray.push({
-            sayacAdi,
-            ...rest,
-            ...endeks,
-          });
-      });
-    });
-    console.log(filteredDateArray, "filteredDateArray");
-    return filteredDateArray;
-  };
-
   return (
     <>
       <div className={styles["header-div"]}>
-        <h2>Okunan Tum Endeks Bilgileri</h2>
+        <h2>{pageHeader(currentUrl)}</h2>
       </div>
       <Modal
         open={open}
@@ -277,7 +209,7 @@ const AllReadIndexesPage = () => {
                     </td>
                   </tr>
                 ) : (
-                  renderTableRows()
+                  <RenderTableRows currentItems={currentItems} />
                 )}
               </tbody>
             </table>
@@ -290,7 +222,16 @@ const AllReadIndexesPage = () => {
               ({(filteredData ? filteredData : dataArray).length} öğe)
             </span>
           </p>
-          <div className={styles.buttons}>{renderPaginationButtons()}</div>
+          <div className={styles.buttons}>
+            {
+              <RenderPaginationButtons
+                getAdjacentPages={getAdjacentPages}
+                currentPage={currentPage}
+                totalPages={totalPages}
+                changePage={changePage}
+              />
+            }
+          </div>
         </div>
       </div>
     </>

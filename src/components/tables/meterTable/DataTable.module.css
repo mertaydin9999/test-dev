@@ -134,7 +134,7 @@ button:hover {
   padding: 1em 0.2em;
 }
 
-.loadingSpinner {
+.loadingContainer {
   position: fixed;
   top: 50%;
   left: 50%;

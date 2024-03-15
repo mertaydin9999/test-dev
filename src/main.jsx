@@ -7,9 +7,18 @@ import { ConfigProvider } from "antd";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <ConfigProvider
     theme={{
+      token: {
+        colorBorder: "none",
+        colorText: "#f6f6f6",
+      },
       cssVar: true,
       hashed: false,
       components: {
+        Button: {
+          defaultBg: "#e84749",
+          primaryColor: "#f6f6f6",
+          defaultColor: "none",
+        },
         Table: {
           colorBgContainer: "#0F2545",
           colorText: "#f6f6f6",

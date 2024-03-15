@@ -44,3 +44,34 @@ export const calculateEndAktifRatio = (end, aktif) => {
     return "";
   }
 };
+export const filterDataByDateRange = (data, startDate, endDate) => {
+  const filteredDateArray = [];
+  const startDateObj = new Date(startDate);
+  const endDateObj = new Date(endDate);
+  data.forEach((item) => {
+    const { sayacAdi, sayacGecmisEndeks, ...rest } = item;
+    sayacGecmisEndeks.forEach((endeks) => {
+      const indexDate = new Date(endeks.maxDemandTarih);
+      if (indexDate >= startDateObj && indexDate <= endDateObj)
+        filteredDateArray.push({
+          sayacAdi,
+          ...rest,
+          ...endeks,
+        });
+    });
+  });
+  console.log(filteredDateArray, "filteredDateArray new");
+  return filteredDateArray;
+};
+
+export const pageHeader = (url) => {
+  switch (url) {
+    case "/meter":
+      return "Sayac";
+    case "/all-read-indexes":
+      // İlgili işlemleri yapın
+      return "Okunan Tum Endeks Bilgileri";
+    default:
+      return "";
+  }
+};
