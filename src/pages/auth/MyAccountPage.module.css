@@ -1,0 +1,40 @@
+.header-div {
+  text-align: center;
+  color: #fff;
+  padding-top: 1em;
+}
+.header-div h2 {
+  font-weight: 400;
+  background-color: #15325b;
+  padding: 0.4em;
+  width: 98%;
+  margin: 0em auto;
+  border-radius: 0.2em;
+}
+.my-account-photo-div {
+  border: 1px solid white;
+  width: 40%;
+  height: 15em;
+}
+.my-account-photo-div img {
+  width: 100%;
+  object-fit: cover;
+}
+.my-account-info-div p {
+  font-size: 1.1em;
+  margin-bottom: 1em;
+  font-weight: 400;
+}
+.my-account-h {
+  text-align: center;
+}
+.user-infos-div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 0em 0em;
+  background-color: #10305a;
+  padding: 2em;
+  width: 45%;
+  border-radius: 0.5em;
+}

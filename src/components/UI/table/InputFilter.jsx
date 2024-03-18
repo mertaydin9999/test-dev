@@ -5,20 +5,23 @@ import Highlighter from "react-highlight-words";
 import styles from "./InputFilter.module.css";
 const { RangePicker } = DatePicker;
 
-const InputFilter = ({ dataSource, onSelectedData }) => {
+const InputFilter = ({ dataSource, onFilterChange }) => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const [selectionType, setSelectionType] = useState("checkbox");
   const [dateRange, setDateRange] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
+
   const onChangeDatePicker = (dates, dateStrings) => {
     const formattedDateStrings = dateStrings.map((date) => {
-      const [day, month, year] = date.split("-").reverse();
+      const [year, month, day] = date.split("-");
       return `${month}.${day}.${year}`;
     });
     setDateRange(formattedDateStrings);
-    onSelectedData(selectedRows, formattedDateStrings);
   };
+  useEffect(() => {
+    onFilterChange(selectedRows, dateRange);
+  }, [selectedRows, dateRange]);
 
   const handleRowSelection = (selectedRows) => {
     setSelectedRows(selectedRows);
@@ -28,17 +31,9 @@ const InputFilter = ({ dataSource, onSelectedData }) => {
   const onChangeCheckbox = (e) => {
     console.log(`checked = ${e.target.checked}`);
   };
-  useEffect(() => {
-    onSelectedData(selectedRows, dateRange);
-  }, [selectedRows, dateRange]);
 
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
-      console.log(
-        `selectedRowKeys: ${selectedRowKeys}`,
-        "selectedRows: ",
-        selectedRows
-      );
       handleRowSelection(selectedRows);
     },
     getCheckboxProps: (record) => ({

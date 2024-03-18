@@ -10,6 +10,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       token: {
         colorBorder: "none",
         colorText: "#f6f6f6",
+        colorBgElevated: "black",
       },
       cssVar: true,
       hashed: false,
@@ -39,6 +40,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         Pagination: {
           colorBgContainer: "#f6f6f6",
           itemActiveBg: "#0F2545",
+        },
+        DatePicker: {
+          cellActiveWithRangeBg: "blue",
         },
       },
     }}

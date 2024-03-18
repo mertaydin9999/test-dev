@@ -4,7 +4,6 @@ import styles from "./AllReadIndexesPage.module.css";
 import { FaFilter } from "react-icons/fa";
 import { FaFileExport } from "react-icons/fa6";
 import { FaListAlt } from "react-icons/fa";
-import { LoadingOutlined } from "@ant-design/icons";
 import { Button, Modal, Spin } from "antd";
 import RenderPaginationButtons from "../../../components/UI/pagination/Pagination";
 import { filterDataByDateRange } from "../../../utils/dataFunctions";
@@ -13,16 +12,36 @@ import RenderTableRows from "../../../components/UI/table/RenderTableRows";
 import ButtonInput from "../../../components/UI/button/ButtonInput";
 import { useLocation } from "react-router-dom";
 import { pageHeader } from "../../../utils/dataFunctions";
+import TableHead from "../../../components/UI/table/TableHead";
+import LoadingSpinner from "../../../components/UI/spinner/LoadingSpinner";
 const baseUrl = "http://10.0.0.101:8088/Makel/OsosApi/Sayac/SayacAyGecisEndeks";
+
+const tableHead = [
+  "Seri No",
+  "Sayac Adi",
+  "Tarih",
+  "Aktif (kWh) (1.8.0)",
+  "Tarife 1 (kWh) (1.8.1)",
+  "Tarife 2 (kWh) (1.8.2)",
+  "Tarife 3 (kWh) (1.8.3)",
+  "Enduktif (kVArh) (5.8.0)",
+  "Kapasitif (kVArh) (8.8.0)",
+  "End/Aktif (kVArh) (%)",
+  "Kap/Aktif (kVArh) (%)",
+  "Donem ",
+];
+
 const AllReadIndexesPage = () => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [dataArray, setDataArray] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedData, setSelectedData] = useState([]);
+  const [selectedRows, setSelectedRows] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [startDate, setStartDate] = useState("01.01.2024");
   const [endDate, setEndDate] = useState("01.15.2024");
+
+  const [selectedDateRange, setSelectedDateRange] = useState([]);
   const location = useLocation();
   const currentUrl = location.pathname;
 
@@ -62,9 +81,13 @@ const AllReadIndexesPage = () => {
     setFilteredData(dataArray); // İlk başta veriyi doldur
   }, [dataArray]);
   useEffect(() => {
-    const filteredData = filterDataByDateRange(dataArray, startDate, endDate);
+    const filteredData = filterDataByDateRange(
+      dataArray,
+      startDate,
+      endDate,
+      selectedRows
+    );
     setFilteredData(filteredData);
-    console.log(filteredData, "filtered data");
   }, [dataArray, startDate, endDate]);
 
   const separateArray = mapToSeparateArray(dataArray);
@@ -73,16 +96,6 @@ const AllReadIndexesPage = () => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const totalPages = Math.ceil(filteredData?.length / itemsPerPage);
   const currentItems = filteredData?.slice(indexOfFirstItem, indexOfLastItem);
-
-  const getAdjacentPages = (currentPage, total, adjacent = 2) => {
-    let pages = [];
-    for (let i = currentPage - adjacent; i <= currentPage + adjacent; i++) {
-      if (i > 0 && i <= total) {
-        pages.push(i);
-      }
-    }
-    return pages;
-  };
 
   const changePage = (pageNumber) => {
     if (pageNumber >= 1 && pageNumber <= totalPages) {
@@ -94,11 +107,13 @@ const AllReadIndexesPage = () => {
     setOpen(true);
   };
   const handleOk = async () => {
+    setStartDate(selectedDateRange[0]);
+    setEndDate(selectedDateRange[1]);
+    setFilteredData(selectedRows);
     setLoading(true);
     try {
       const response = await axios.get(`${baseUrl}/${startDate}/${endDate}`);
       setDataArray(response.data);
-      console.log(dataArray, "son cekme");
     } catch (error) {
       console.log(error);
     } finally {
@@ -107,133 +122,113 @@ const AllReadIndexesPage = () => {
     }
   };
   const handleCancel = () => {
+    setSelectedDateRange([]);
     setOpen(false);
   };
-  const handleSelectedData = (rows, dateRange) => {
-    const date = dateRange;
-    setStartDate(date[0]);
-    setEndDate(date[1]);
+  const handleFilterChange = (filteredData, dateRange) => {
+    setSelectedDateRange(dateRange);
+    setSelectedRows(filteredData);
   };
-
+  console.log(selectedDateRange, selectedRows);
   return (
     <>
-      <div className={styles["header-div"]}>
-        <h2>{pageHeader(currentUrl)}</h2>
-      </div>
-      <Modal
-        open={open}
-        title="Filtreleme Ekrani"
-        onOk={handleOk}
-        onCancel={handleCancel}
-        width={1200}
-        footer={[
-          <Button
-            key="cancel"
-            type="primary"
-            style={{
-              backgroundColor: "#e84749",
-              margin: "20px 20px 0 0px ",
-              padding: "0em 5em",
-            }}
-            loading={loading}
-            onClick={handleCancel}
-          >
-            Vazgec
-          </Button>,
-          <Button
-            key="submit"
-            type="primary"
-            style={{
-              backgroundColor: "#0A51AB",
-              margin: "0 0px 0 0px ",
-              padding: "0em 5em",
-            }}
-            loading={loading}
-            onClick={handleOk}
-          >
-            Filtrele
-          </Button>,
-        ]}
-      >
-        <InputFilter
-          dataSource={separateArray}
-          onSelectedData={handleSelectedData}
-        />
-      </Modal>
-      <div
-        style={{ color: "white", overflowY: "auto" }}
-        className={styles["data-table-page-container"]}
-      >
-        <div className={styles["table-scroll"]}>
-          <div className={styles["table-container-wrapper"]}>
-            <div className={styles["filter-buttons"]}>
-              <ButtonInput onClick={showModal}>
-                <FaFilter />
+      {loading ? (
+        <LoadingSpinner />
+      ) : (
+        <>
+          <div className={styles["header-div"]}>
+            <h2>{pageHeader(currentUrl)}</h2>
+          </div>
+          <Modal
+            open={open}
+            title="Filtreleme Ekrani"
+            onOk={handleOk}
+            onCancel={handleCancel}
+            width={1200}
+            footer={[
+              <Button
+                key="cancel"
+                type="primary"
+                style={{
+                  backgroundColor: "#e84749",
+                  margin: "20px 20px 0 0px ",
+                  padding: "0em 5em",
+                }}
+                loading={loading}
+                onClick={handleCancel}
+              >
+                Vazgec
+              </Button>,
+              <Button
+                key="submit"
+                type="primary"
+                style={{
+                  backgroundColor: "#0A51AB",
+                  margin: "0 0px 0 0px ",
+                  padding: "0em 5em",
+                }}
+                loading={loading}
+                onClick={handleOk}
+              >
                 Filtrele
-              </ButtonInput>
-              <ButtonInput>
-                <FaFileExport />
-                Cikart
-              </ButtonInput>
-              <ButtonInput>
-                <FaListAlt />
-                Sutunlari Goster
-              </ButtonInput>
+              </Button>,
+            ]}
+          >
+            <InputFilter
+              dataSource={separateArray}
+              onFilterChange={handleFilterChange}
+            />
+          </Modal>
+          <div
+            style={{ color: "white", overflowY: "auto" }}
+            className={styles["data-table-page-container"]}
+          >
+            <div className={styles["table-scroll"]}>
+              <div className={styles["table-container-wrapper"]}>
+                <div className={styles["filter-buttons"]}>
+                  <ButtonInput onClick={showModal}>
+                    <FaFilter />
+                    Filtrele
+                  </ButtonInput>
+                  <ButtonInput>
+                    <FaFileExport />
+                    Cikart
+                  </ButtonInput>
+                  <ButtonInput>
+                    <FaListAlt />
+                    Sutunlari Goster
+                  </ButtonInput>
+                </div>
+                <table className={styles["table-container"]}>
+                  <thead>
+                    <TableHead tableHead={tableHead} />
+                  </thead>
+                  <tbody>
+                    <RenderTableRows currentItems={currentItems} />
+                  </tbody>
+                </table>
+              </div>
             </div>
-            <table className={styles["table-container"]}>
-              <thead>
-                <tr>
-                  <th>Seri No</th>
-                  <th>Sayac Adi</th>
-                  <th>Tarih</th>
-                  <th>Aktif (kWh) (1.8.0)</th>
-                  <th>Tarife 1 (kWh) (1.8.1)</th>
-                  <th>Tarife 2 (kWh) (1.8.2)</th>
-                  <th>Tarife 3 (kWh) (1.8.3)</th>
-                  <th>Enduktif (kVArh) (5.8.0)</th>
-                  <th>Kapasitif (kVArh) (8.8.0)</th>
-                  <th>End/Aktif (kVArh) (%)</th>
-                  <th>Kap/Aktif (kVArh) (%)</th>
-                  <th>Donem </th>
-                </tr>
-              </thead>
-              <tbody>
-                {loading ? (
-                  <tr>
-                    <td colSpan="12" className={styles.loadingSpinner}>
-                      <Spin
-                        indicator={
-                          <LoadingOutlined style={{ fontSize: 24 }} spin />
-                        }
-                      />
-                    </td>
-                  </tr>
-                ) : (
-                  <RenderTableRows currentItems={currentItems} />
-                )}
-              </tbody>
-            </table>
+            <div className={styles.pages}>
+              <p className={styles.pagenumbers}>
+                Sayfa {currentPage} / {totalPages}{" "}
+                <span>
+                  ({(filteredData ? filteredData : dataArray).length} öğe)
+                </span>
+              </p>
+              <div className={styles.buttons}>
+                {
+                  <RenderPaginationButtons
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    changePage={changePage}
+                  />
+                }
+              </div>
+            </div>
           </div>
-        </div>
-        <div className={styles.pages}>
-          <p className={styles.pagenumbers}>
-            Sayfa {currentPage} / {totalPages}{" "}
-            <span>
-              ({(filteredData ? filteredData : dataArray).length} öğe)
-            </span>
-          </p>
-          <div className={styles.buttons}>
-            {
-              <RenderPaginationButtons
-                getAdjacentPages={getAdjacentPages}
-                currentPage={currentPage}
-                totalPages={totalPages}
-                changePage={changePage}
-              />
-            }
-          </div>
-        </div>
-      </div>
+        </>
+      )}
     </>
   );
 };

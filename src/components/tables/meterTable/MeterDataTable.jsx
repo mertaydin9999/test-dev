@@ -1,14 +1,31 @@
 import React, { useState, useEffect } from "react";
 import styles from "./DataTable.module.css";
 import axios from "axios";
-import { LoadingOutlined } from "@ant-design/icons";
-import { Spin } from "antd";
+
 import InputFilter from "../../UI/input/InputFilter";
 import RenderPaginationButtons from "../../UI/pagination/Pagination";
 import RenderMeterTableRows from "./RenderMeterTableRows";
-import RenderMeterTableTh from "./RenderMeterTableTh";
 import { pageHeader } from "../../../utils/dataFunctions";
 import { useLocation } from "react-router-dom";
+import TableHead from "../../UI/table/TableHead";
+import LoadingSpinner from "../../UI/spinner/LoadingSpinner";
+
+const tableHeads = [
+  "Uretici",
+  "Model",
+  "Sayac Adi",
+  "Seri No",
+  "Abone No",
+  "Tesisat No",
+  "Sayac Kodu",
+  "Carpan",
+  "Akim Trafo Orani",
+  "Cift Yon",
+  "Gerilim Trafo Orani",
+  "Birim",
+  "Yuk Profili Birim",
+  "Yuk Profili Kayit",
+];
 const DataTable = ({ url }) => {
   const [dataArray, setDataArray] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -140,9 +157,7 @@ const DataTable = ({ url }) => {
   return (
     <>
       {loading ? (
-        <div className={styles.loadingContainer}>
-          <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} />
-        </div>
+        <LoadingSpinner className={styles.loadingContainer} />
       ) : (
         <>
           <div className={styles["header-div"]}>
@@ -153,7 +168,7 @@ const DataTable = ({ url }) => {
               <div className={styles["table-container-wrapper"]}>
                 <table className={styles["table-container"]}>
                   <thead>
-                    <RenderMeterTableTh />
+                    <TableHead tableHead={tableHeads} />
                     <tr className={styles["flex-container"]}>
                       {inputData.map((item, index) => (
                         <th key={index}>

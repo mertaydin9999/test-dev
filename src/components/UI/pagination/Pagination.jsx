@@ -1,11 +1,15 @@
 import ButtonInput from "../button/ButtonInput";
 import styles from "../../../pages/reports/meterIndexes/AllReadIndexesPage.module.css";
-const RenderPaginationButtons = ({
-  getAdjacentPages,
-  currentPage,
-  totalPages,
-  changePage,
-}) => {
+const RenderPaginationButtons = ({ currentPage, totalPages, changePage }) => {
+  const getAdjacentPages = (currentPage, total, adjacent = 2) => {
+    let pages = [];
+    for (let i = currentPage - adjacent; i <= currentPage + adjacent; i++) {
+      if (i > 0 && i <= total) {
+        pages.push(i);
+      }
+    }
+    return pages;
+  };
   const adjacentPages = getAdjacentPages(currentPage, totalPages);
   return (
     <>

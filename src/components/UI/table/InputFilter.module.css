@@ -43,3 +43,6 @@
 li a {
   color: #fff !important;
 }
+.date-picker-div .ant-picker-range {
+  color: black; /* Metin rengini burada belirleyebilirsiniz */
+}
