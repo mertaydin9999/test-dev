@@ -4,6 +4,8 @@ import styles from "./AllReadIndexesPage.module.css";
 import { FaFilter } from "react-icons/fa";
 import { FaFileExport } from "react-icons/fa6";
 import { FaListAlt } from "react-icons/fa";
+import { GrClearOption } from "react-icons/gr";
+
 import { Button, Modal, Spin } from "antd";
 import RenderPaginationButtons from "../../../components/UI/pagination/Pagination";
 import { filterDataByDateRange } from "../../../utils/dataFunctions";
@@ -13,6 +15,7 @@ import ButtonInput from "../../../components/UI/button/ButtonInput";
 import { useLocation } from "react-router-dom";
 import { pageHeader } from "../../../utils/dataFunctions";
 import TableHead from "../../../components/UI/table/TableHead";
+
 import LoadingSpinner from "../../../components/UI/spinner/LoadingSpinner";
 const baseUrl = "http://10.0.0.101:8088/Makel/OsosApi/Sayac/SayacAyGecisEndeks";
 
@@ -38,10 +41,10 @@ const AllReadIndexesPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedRows, setSelectedRows] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-  const [startDate, setStartDate] = useState("01.01.2024");
-  const [endDate, setEndDate] = useState("01.15.2024");
-
+  const [startDate, setStartDate] = useState("01.01.2015");
+  const [endDate, setEndDate] = useState("03.15.2025");
   const [selectedDateRange, setSelectedDateRange] = useState([]);
+
   const location = useLocation();
   const currentUrl = location.pathname;
 
@@ -67,7 +70,7 @@ const AllReadIndexesPage = () => {
       const { sayacAdi, sayacGecmisEndeks, ...rest } = item;
       sayacGecmisEndeks.forEach((endeks) => {
         separateArray.push({
-          key: keyIndex++, // Her öğe için artan bir key değeri atanıyor
+          key: keyIndex++,
           sayacAdi,
           ...rest,
           ...endeks,
@@ -107,10 +110,11 @@ const AllReadIndexesPage = () => {
     setOpen(true);
   };
   const handleOk = async () => {
+    setLoading(true);
     setStartDate(selectedDateRange[0]);
     setEndDate(selectedDateRange[1]);
     setFilteredData(selectedRows);
-    setLoading(true);
+
     try {
       const response = await axios.get(`${baseUrl}/${startDate}/${endDate}`);
       setDataArray(response.data);
@@ -122,14 +126,21 @@ const AllReadIndexesPage = () => {
     }
   };
   const handleCancel = () => {
-    setSelectedDateRange([]);
     setOpen(false);
   };
   const handleFilterChange = (filteredData, dateRange) => {
     setSelectedDateRange(dateRange);
     setSelectedRows(filteredData);
   };
-  console.log(selectedDateRange, selectedRows);
+  const handleClear = () => {
+    setSelectedRows([]);
+    setStartDate("01.01.2015");
+    setEndDate("01.01.2025");
+  };
+  console.log(dataArray, "data Array");
+  console.log(separateArray, "separate Array");
+  console.log(filteredData, "filtered Array");
+
   return (
     <>
       {loading ? (
@@ -197,6 +208,10 @@ const AllReadIndexesPage = () => {
                   <ButtonInput>
                     <FaListAlt />
                     Sutunlari Goster
+                  </ButtonInput>
+                  <ButtonInput onClick={handleClear}>
+                    <GrClearOption />
+                    Temizle
                   </ButtonInput>
                 </div>
                 <table className={styles["table-container"]}>

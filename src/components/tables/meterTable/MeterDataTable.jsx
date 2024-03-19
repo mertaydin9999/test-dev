@@ -181,7 +181,6 @@ const DataTable = ({ url }) => {
                           />
                         </th>
                       ))}
-                      {}
                     </tr>
                   </thead>
                   <tbody>

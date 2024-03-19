@@ -8,9 +8,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <ConfigProvider
     theme={{
       token: {
-        colorBorder: "none",
+        colorBorder: "white",
         colorText: "#f6f6f6",
-        colorBgElevated: "black",
+        colorBgElevated: "#15417E",
       },
       cssVar: true,
       hashed: false,
@@ -42,7 +42,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           itemActiveBg: "#0F2545",
         },
         DatePicker: {
-          cellActiveWithRangeBg: "blue",
+          cellActiveWithRangeBg: "#0f2545",
+          colorTextHeading: "white",
         },
       },
     }}

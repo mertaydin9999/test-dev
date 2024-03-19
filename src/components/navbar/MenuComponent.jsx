@@ -68,7 +68,7 @@ const MenuComponent = () => {
       <BsFillModemFill style={{ fontSize: "1.7em" }} />,
       [
         getItem("Paket Guncelleme", "/packages-update"),
-        getItem("Modem Parametreleri", "/modem-parameter"),
+        getItem("Modem Parametreleri", "/modem-parameters"),
         getItem("Modem Is Emri Yukleme", "/loading-modem-command-job"),
       ]
     ),

@@ -165,7 +165,7 @@ const InputFilter = ({ dataSource, onFilterChange }) => {
       dataIndex: "seriNo",
       key: "seriNo",
       width: "20%",
-      ...getColumnSearchProps("seriNo"),
+      sorter: (a, b) => a.seriNo - b.seriNo,
     },
     {
       title: "Abone No",
@@ -271,7 +271,12 @@ const InputFilter = ({ dataSource, onFilterChange }) => {
         <div className={styles["date-container"]}>
           <p>Baslangic ve Bitis Tarihi </p>
           <div className={styles["date-picker-div"]}>
-            <RangePicker onChange={onChangeDatePicker} />
+            <RangePicker
+              onChange={onChangeDatePicker}
+              style={{
+                color: "black",
+              }}
+            />
           </div>
           <div className={styles["date-checkboxes"]}>
             <Checkbox className={styles.checkbox} onChange={onChangeCheckbox}>

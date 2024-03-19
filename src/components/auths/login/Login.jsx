@@ -55,6 +55,10 @@ const Login = ({ handleLogin, user }) => {
             <Input
               prefix={<UserOutlined className="site-form-item-icon" />}
               placeholder="Kullanici Adi"
+              style={{
+                color: "black",
+                borderColor: "black",
+              }}
             />
           </Form.Item>
           <Form.Item
@@ -70,6 +74,10 @@ const Login = ({ handleLogin, user }) => {
               prefix={<LockOutlined className="site-form-item-icon" />}
               type="password"
               placeholder="Sifre"
+              style={{
+                color: "black",
+                borderColor: "black",
+              }}
             />
           </Form.Item>
           <Form.Item>
